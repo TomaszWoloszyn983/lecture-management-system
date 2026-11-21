@@ -36,7 +36,7 @@ class LectureManager
         }
         else
         {
-            Console.WriteLine("Lecture not found.");
+            Console.WriteLine("\nLecture not found!");
         }
     }
 
@@ -50,7 +50,7 @@ class LectureManager
         }
         else
         {
-            Console.WriteLine("Invalid index. No lecture removed.");
+            Console.WriteLine("\nInvalid index. No lecture removed!");
         }
     }
 

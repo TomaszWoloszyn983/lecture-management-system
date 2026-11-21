@@ -18,12 +18,14 @@ class Program{
         lectureManager.DisplayAllLectures();
 
         lectureManager.DeleteLecture(lecture1); // This will not find the lecture because it's a different instance
+        lectureManager.DeleteLecture(lecture1); // This will not find the lecture because it's a different instance
         
         Console.WriteLine($"\n\nLectures in the list: {lectureManager.GetTotalLectures()}"
                          +$"\nTotal lectures created: {Lecture.TotalLecturesCreated}");
         lectureManager.DisplayAllLectures();
 
         lectureManager.DeleteLectureByIndex(1); 
+        lectureManager.DeleteLectureByIndex(10); 
 
         Console.WriteLine($"\n\nLectures in the list: {lectureManager.GetTotalLectures()}"
                     +$"\nTotal lectures created: {Lecture.TotalLecturesCreated}");
@@ -36,6 +38,15 @@ class Program{
                     +$"\nTotal lectures created: {Lecture.TotalLecturesCreated}");
         lectureManager.DisplayAllLectures();
 
+        Console.WriteLine("\n\nEnter values");
+        ConsoleUI consoleUI = new();
+        lectureManager.AddLecture(consoleUI.getUserInput());
+
+
+        Console.WriteLine($"\n\nLectures in the list: {lectureManager.GetTotalLectures()}"
+                    +$"\nTotal lectures created: {Lecture.TotalLecturesCreated}");
+        lectureManager.DisplayAllLectures();
+        Console.WriteLine("Exiting the program...");
     }
 }
 
