@@ -23,7 +23,7 @@ public abstract class Lecture
         
         Console.WriteLine(
                 $"\nLecture created: {SubjectCode} - {SubjectName}."
-                +" Total lectures created: {_totalLecturesCreated}"
+                +$" Total lectures created: {_totalLecturesCreated}"
         );
     }
 

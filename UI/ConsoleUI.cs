@@ -1,29 +1,34 @@
 using LectureManagementSystem.Models;
 
-class ConsoleUI()
+class ConsoleUI(LectureManager lectureManager)
 {
-    // private LectureManager _lectureManager = lectureManager;
+    private LectureManager _lectureManager = lectureManager;
 
-    // public void DisplayAllLectures()
-    // {
-    //     var lectures = _lectureManager.DisplayAllLectures();
-    //     if (lectures.Count == 0)
-    //     {
-    //         Console.WriteLine("\nNo lectures available.");
-    //         return;
-    //     }
-
-    //     Console.WriteLine("\nList of Lectures:");
-    //     for (int i = 0; i < lectures.Count; i++)
-    //     {
-    //         Console.WriteLine($"{i + 1}. {lectures[i].GetDetails()}");
-    //     }
-    // }
-
-    public Lecture getUserInput()
+    public void run()
+    {
+        bool running = true;
+        while (running)
+        {
+            Console.WriteLine("\n=== LECTURE MANAGEMENT SYSTEM ==="
+                            +"\nSELECT AN OPTION:"
+                            +"\n1 to Display All Lectures"
+                            +"\n2 to Add Lecture"
+                            +"\n3 to Update Lecture"
+                            +"\n4 to Delete Lecture"
+                            +"\n0 to Exit");
+            String? userChoice = Console.ReadKey().KeyChar.ToString();
+            Console.WriteLine("You selected option: " + userChoice); // Move to the next line after user input
+            if (userChoice == "0")
+            {
+                running = false;
+            }
+        }
+    }
+    
+    public Lecture getNewLecture()
     {   Object[] inputParts = new Object[5];
         Console.WriteLine("\n\nEnter lecture code");
-        string lectureCode = Console.ReadLine();
+        string lectureCode = Console.ReadLine().ToUpper();
         switch (lectureCode)
         {
             case "PR":
@@ -60,7 +65,8 @@ class ConsoleUI()
                 inputParts[4] = Console.ReadLine();
                 return new Astronomy(inputParts[1].ToString(), inputParts[2].ToString(), (int)inputParts[3], inputParts[4].ToString());
             default:
-                throw new ArgumentException($"Invalid lecture code: {lectureCode}");
+                Console.WriteLine($"Invalid lecture code: {lectureCode}");
+                return null;
         }
 
     }
