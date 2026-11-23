@@ -40,18 +40,20 @@ class LectureManager
         }
     }
 
-    public void DeleteLectureByIndex(int index)
+    public bool DeleteLectureByIndex(int index)
     {
         if (index >= 0 && index < _lectures.Count)
         {
             var lecture = _lectures[index];
             _lectures.RemoveAt(index);
             Console.WriteLine($"Lecture removed: {lecture.GetDetails()}");
+            return true;
         }
         else
         {
             Console.WriteLine("\nInvalid index. No lecture removed!");
         }
+        return false;
     }
 
 
@@ -106,6 +108,18 @@ class LectureManager
     public int GetTotalLectures()
     {
         return _lectures.Count;
+    }
+
+
+    public Lecture? GetLectureByCode(string subjectCode)
+    {
+        if (string.IsNullOrWhiteSpace(subjectCode))
+            return null;
+
+        string normalizedCode = subjectCode.Trim().ToUpper();
+
+        return _lectures.FirstOrDefault(lecture =>
+            lecture.SubjectCode.Equals(normalizedCode, StringComparison.OrdinalIgnoreCase));
     }
 
 

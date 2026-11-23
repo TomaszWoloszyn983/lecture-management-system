@@ -38,14 +38,6 @@ class Program{
                     +$"\nTotal lectures created: {Lecture.TotalLecturesCreated}");
         lectureManager.DisplayAllLectures();
 
-        Console.WriteLine("\n\nEnter values");
-        ConsoleUI consoleUI = new(lectureManager);
-        lectureManager.AddLecture(consoleUI.getNewLecture());
-
-
-        Console.WriteLine($"\n\nLectures in the list: {lectureManager.GetTotalLectures()}"
-                    +$"\nTotal lectures created: {Lecture.TotalLecturesCreated}");
-        lectureManager.DisplayAllLectures();
         new ConsoleUI(lectureManager).run();
         
         Console.WriteLine("Exiting the program...");
