@@ -34,7 +34,7 @@ public abstract class Lecture
     public virtual string GetDetails()
     {
         return $"Code: {SubjectCode} | Name: {SubjectName}"
-                +$" | Lecturer: {LecturerName} | Hours: {LectureHours}h";
+              +$" | Lecturer: {LecturerName} | Hours: {LectureHours}h";
     }
 
     /**

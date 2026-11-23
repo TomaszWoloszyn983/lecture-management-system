@@ -17,14 +17,12 @@ class LectureManager
     public void AddLecture(Lecture lecture)
     {
         _lectures.Add(lecture);
-        // Console.WriteLine($"Lecture added: {lecture.GetDetails()}");
         Console.WriteLine("Lecture added successfully.");
     }
 
     internal void AddLecture(Programming programming)
     {
         _lectures.Add(programming);
-        // Console.WriteLine($"Lecture added: {programming.GetDetails()}");
         Console.WriteLine("Lecture added successfully.");
     }
 
@@ -32,7 +30,7 @@ class LectureManager
     {
         if (_lectures.Remove(lecture))
         {
-            Console.WriteLine($"Lecture removed: {lecture.GetDetails()}");
+            Console.WriteLine("Lecture deleted");
         }
         else
         {
@@ -46,7 +44,7 @@ class LectureManager
         {
             var lecture = _lectures[index];
             _lectures.RemoveAt(index);
-            Console.WriteLine($"Lecture removed: {lecture.GetDetails()}");
+            Console.WriteLine("Lecture deleted");
             return true;
         }
         else
@@ -79,7 +77,7 @@ class LectureManager
         if (newLectureHours.HasValue)
         {
             if (newLectureHours.Value <= 0)
-                throw new ArgumentOutOfRangeException(nameof(newLectureHours), "Liczba godzin musi być większa od zera.");
+                throw new ArgumentOutOfRangeException(nameof(newLectureHours), "Lecture hours must be a positive number.");
 
             lecture.LectureHours = newLectureHours.Value;
         }

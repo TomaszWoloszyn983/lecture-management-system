@@ -14,7 +14,7 @@ public class Programming : Lecture
         _totalProgrammingLecturesCreated++;
     }
 
-    // Nadpisanie metody (Polimorfizm)
+    // Overriding the GetDetails method
     public override string GetDetails()
     {
         return base.GetDetails() + $" | Language: {ProgrammingLanguage} (Type: Programming)";
