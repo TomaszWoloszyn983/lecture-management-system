@@ -52,39 +52,41 @@ class ConsoleUI(LectureManager lectureManager)
 
                 // Update lecture
                 case "3":
-                /*
-                    Powinniśmy móc otrzymał pustą wartość, aby zachować aktualną wartość. Jeśli użytkownik wprowadzi pustą wartość, nie powinniśmy aktualizować tej właściwości.
-                    Dlatego w metodzie UpdateLecture w klasie LectureManager, jeśli którykolwiek z parametrów jest pusty lub null, nie aktualizujemy tej właściwości.
-
-                    Namieszałem trochę w unikalnymi polami pod-obiektów. Moża przywrócic ich nazwy do 
-                    poprzedniej wersji. Wyświetla się ona w konsoli.
-                */
-                    string lectureCode = GetStringInput("Enter the lecture code to update:");
+                    /*
+                    * The update process is interactive. It prompts the user for each detail.
+                    * If the user presses Enter without typing anything, the current value is retained.
+                    * This allows for selective updating of lecture details.
+                    */      
+                    string lectureCode = ReadStringInput("Enter the lecture code to update:");
                     Lecture lectureToUpdate = lectureManager.GetLectureByCode(lectureCode);
                     if (lectureToUpdate != null)
                     {
                         Console.WriteLine($"\nCurrent details: {lectureToUpdate.GetDetails()}");
-                        string newSubjectName = GetStringInput("Enter new subject name (or press Enter to keep current):");
-                        string newLecturerName = GetStringInput("Enter new lecturer name (or press Enter to keep current):");
-                        int? newLectureHours = null;
-                        string lectureHoursInput = GetStringInput("Enter new lecture hours (or press Enter to keep current):");
-                        if (!string.IsNullOrWhiteSpace(lectureHoursInput))
-                        {
-                            if (int.TryParse(lectureHoursInput, out int parsedHours) && parsedHours > 0)
-                            {
-                                newLectureHours = parsedHours;
-                            }
-                            else
-                            {
-                                Console.WriteLine("Invalid input for lecture hours. Keeping current value.");
-                            }
-                        }
-
+                        string newSubjectName = ReadStringOrDefault(
+                                                "Enter new subject name (or press Enter to keep current):", 
+                                                lectureToUpdate.SubjectName);
+                        string newLecturerName = ReadStringOrDefault(
+                                                "Enter new lecturer name (or press Enter to keep current):", 
+                                                lectureToUpdate.LecturerName);
+                        int newLectureHours = ReadPositiveIntOrDefault(
+                                                "Enter new lecture hours (or press Enter to keep current):",
+                                                lectureToUpdate.LectureHours);
+                        string newSpecificDetail = ReadStringOrDefault(
+                                                "Enter new specific detail (or press Enter to keep current):", 
+                                                lectureToUpdate switch
+                                                {
+                                                    Programming p => p.ProgrammingLanguage,
+                                                    Astronomy a => a.CelestialBody,
+                                                    Mycology m => m.FungiType,
+                                                    _ => ""
+                                                });
+                        
                         // Update the lecture with the new details
                         _lectureManager.UpdateLecture(lectureCode, 
                                                       string.IsNullOrWhiteSpace(newSubjectName) ? null : newSubjectName,
                                                       string.IsNullOrWhiteSpace(newLecturerName) ? null : newLecturerName,
-                                                      newLectureHours);
+                                                      newLectureHours,
+                                                      string.IsNullOrWhiteSpace(newSpecificDetail) ? null : newSpecificDetail);
                     }
                     else
                     {
@@ -99,12 +101,12 @@ class ConsoleUI(LectureManager lectureManager)
                 // Delete lecture
                 case "4":
                     // Console.WriteLine("Enter the lecture code to delete:");
-                    string deleteCode = GetStringInput("Enter the lecture code to delete:");
+                    string deleteCode = ReadStringInput("Enter the lecture code to delete:");
                     Lecture lectureToDelete = lectureManager.GetLectureByCode(deleteCode);
                     if (lectureToDelete != null)
                     {
                         Console.WriteLine($"\nAre you sure you want to delete the lecture: {lectureToDelete.GetDetails()}?");
-                        string confirmation = GetStringInput("Type 'yes' to confirm deletion or 'no' to cancel:");
+                        string confirmation = ReadStringInput("Type 'yes' to confirm deletion or 'no' to cancel:");
                         if (confirmation.ToUpper() == "YES")
                         {
                             _lectureManager.DeleteLecture(lectureToDelete);
@@ -139,24 +141,24 @@ class ConsoleUI(LectureManager lectureManager)
         {
             case "PR":
                 inputParts[0] = lectureCode;
-                inputParts[1] = GetStringInput("Enter subject name:");
-                inputParts[2] = GetStringInput("Enter lecturer name:");
-                inputParts[3] = GetNumericInput("Enter lecture hours:");
-                inputParts[4] = GetStringInput("Enter programming language:");
+                inputParts[1] = ReadStringInput("Enter subject name:");
+                inputParts[2] = ReadStringInput("Enter lecturer name:");
+                inputParts[3] = ReadNumericInput("Enter lecture hours:");
+                inputParts[4] = ReadStringInput("Enter programming language:");
                 return new Programming(inputParts[1].ToString(), inputParts[2].ToString(), (int)inputParts[3], inputParts[4].ToString());
             case "MY":
                 inputParts[0] = lectureCode;
-                inputParts[1] = GetStringInput("Enter subject name:");
-                inputParts[2] = GetStringInput("Enter lecturer name:");
-                inputParts[3] = GetNumericInput("Enter lecture hours:");
-                inputParts[4] = GetStringInput("Enter database type:");
+                inputParts[1] = ReadStringInput("Enter subject name:");
+                inputParts[2] = ReadStringInput("Enter lecturer name:");
+                inputParts[3] = ReadNumericInput("Enter lecture hours:");
+                inputParts[4] = ReadStringInput("Enter database type:");
                 return new Mycology(inputParts[1].ToString(), inputParts[2].ToString(), (int)inputParts[3], inputParts[4].ToString());
             case "AS":
                 inputParts[0] = lectureCode;
-                inputParts[1] = GetStringInput("Enter subject name:");
-                inputParts[2] = GetStringInput("Enter lecturer name:");
-                inputParts[3] = GetNumericInput("Enter lecture hours:");
-                inputParts[4] = GetStringInput("Enter network type:");
+                inputParts[1] = ReadStringInput("Enter subject name:");
+                inputParts[2] = ReadStringInput("Enter lecturer name:");
+                inputParts[3] = ReadNumericInput("Enter lecture hours:");
+                inputParts[4] = ReadStringInput("Enter network type:");
                 return new Astronomy(inputParts[1].ToString(), inputParts[2].ToString(), (int)inputParts[3], inputParts[4].ToString());
             default:
                 Console.WriteLine($"Invalid lecture code: {lectureCode}");
@@ -169,7 +171,7 @@ class ConsoleUI(LectureManager lectureManager)
     * A method to get a non-empty string input from the user.
     * It prompts the user until a valid non-empty string is entered.
     */
-    private static string GetStringInput(string prompt)
+    private static string ReadStringInput(string prompt)
     {
         Console.WriteLine(prompt);
         string input;
@@ -182,12 +184,24 @@ class ConsoleUI(LectureManager lectureManager)
         return input;
     }
 
+    /**
+    * A method to get a string input from the user, allowing for a default value.
+    * If the user enters an empty string, the current value is returned.
+    */
+    private static string ReadStringOrDefault(string prompt, string currentValue)
+    {
+        Console.Write($"{prompt} [{currentValue}]: ");
+        string? input = Console.ReadLine();
+
+        return string.IsNullOrWhiteSpace(input) ? currentValue : input.Trim();
+    }
+
 
     /**
      * A method to get a positive integer input from the user.
      * It prompts the user until a valid positive integer is entered.
      */
-    private static int GetNumericInput(string prompt)
+    private static int ReadNumericInput(string prompt)
     {
         Console.WriteLine(prompt);
         int input;
@@ -204,4 +218,21 @@ class ConsoleUI(LectureManager lectureManager)
         } while (!isValid);
         return input;
     }
+
+    private static int ReadPositiveIntOrDefault(string prompt, int currentValue)
+{
+    while (true)
+    {
+        Console.Write($"{prompt} [{currentValue}]: ");
+        string? input = Console.ReadLine();
+
+        if (string.IsNullOrWhiteSpace(input))
+            return currentValue;
+
+        if (int.TryParse(input.Trim(), out int parsedValue) && parsedValue > 0)
+            return parsedValue;
+
+        Console.WriteLine("Enter a valid positive integer or press Enter to keep the current value.");
+    }
+}
 }

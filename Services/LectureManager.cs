@@ -62,19 +62,22 @@ class LectureManager
     * An empty string or null value for any of the parameters means
     * that particular detail will not be updated.
     */
-    public bool UpdateLecture(string subjectCode, string? newSubjectName,
-                              string? newLecturerName, int? newLectureHours,
-                              string? newSpecificDetail = null)
+    public bool UpdateLecture(string subjectCode, string newSubjectName,
+                              string newLecturerName, int newLectureHours,
+                              string newSpecificDetail)
     {
         if (string.IsNullOrWhiteSpace(subjectCode))
-            return false;
-
-        Lecture? lecture = GetLectureByCode(subjectCode.Trim().ToUpper());
-        if (lecture == null)
         {
-            Console.WriteLine("\nLecture not found.");
+            Console.WriteLine("\nSubject Code not found!");
             return false;
         }
+
+        Lecture? lecture = GetLectureByCode(subjectCode.Trim().ToUpper());
+        // if (lecture == null)
+        // {
+        //     Console.WriteLine("\nLecture not found!");
+        //     return false;
+        // }
 
         if (!string.IsNullOrWhiteSpace(newSubjectName))
             lecture.SubjectName = newSubjectName.Trim();
@@ -82,12 +85,9 @@ class LectureManager
         if (!string.IsNullOrWhiteSpace(newLecturerName))
             lecture.LecturerName = newLecturerName.Trim();
 
-        if (newLectureHours.HasValue)
+        if (newLectureHours > 0)
         {
-            if (newLectureHours.Value <= 0)
-                Console.WriteLine("Lecture hours must be a positive number.");
-
-            lecture.LectureHours = newLectureHours.Value;
+            lecture.LectureHours = newLectureHours;
         }
 
         if (!string.IsNullOrWhiteSpace(newSpecificDetail))
@@ -99,7 +99,7 @@ class LectureManager
                     programming.ProgrammingLanguage = trimmedSpecific;
                     break;
                 case Astronomy astronomy:
-                    astronomy.Galaxy = trimmedSpecific;
+                    astronomy.CelestialBody = trimmedSpecific;
                     break;
                 case Mycology mycology:
                     mycology.FungiType = trimmedSpecific;

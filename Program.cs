@@ -32,7 +32,7 @@ class Program{
         lectureManager.DisplayAllLectures();
 
         
-        Console.WriteLine("Updating lecture... " + lectureManager.UpdateLecture("PR_0002", "The Hangman Game", "Dr. Doom", 45)); 
+        Console.WriteLine("Updating lecture... " + lectureManager.UpdateLecture("PR_0002", "The Hangman Game", "Dr. Doom", 45, "Sumatra")); 
 
         Console.WriteLine($"\n\nLectures in the list: {lectureManager.GetTotalLectures()}"
                     +$"\nTotal lectures created: {Lecture.TotalLecturesCreated}");
