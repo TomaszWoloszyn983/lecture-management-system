@@ -28,6 +28,7 @@ class ConsoleUI(LectureManager lectureManager)
 
             switch (userChoice)
             {
+                // Display all lectures
                 case "1":
                 if (_lectureManager.GetTotalLectures() > 0)
                     {
@@ -38,9 +39,9 @@ class ConsoleUI(LectureManager lectureManager)
                     {
                         Console.WriteLine("\nNo lectures available yet.");
                     }
-                    
-                    // lectureManager.DisplayAllLectures();
                     break;
+
+                // Add lecture
                 case "2":
                     Lecture newLecture = getNewLecture();
                     if (newLecture != null)
@@ -48,18 +49,58 @@ class ConsoleUI(LectureManager lectureManager)
                         _lectureManager.AddLecture(newLecture);
                     }
                     break;
+
+                // Update lecture
                 case "3":
-                    Console.WriteLine("Enter the lecture code to update:");
+                /*
+                    Powinniśmy móc otrzymał pustą wartość, aby zachować aktualną wartość. Jeśli użytkownik wprowadzi pustą wartość, nie powinniśmy aktualizować tej właściwości.
+                    Dlatego w metodzie UpdateLecture w klasie LectureManager, jeśli którykolwiek z parametrów jest pusty lub null, nie aktualizujemy tej właściwości.
+
+                    Namieszałem trochę w unikalnymi polami pod-obiektów. Moża przywrócic ich nazwy do 
+                    poprzedniej wersji. Wyświetla się ona w konsoli.
+                */
+                    string lectureCode = GetStringInput("Enter the lecture code to update:");
+                    Lecture lectureToUpdate = lectureManager.GetLectureByCode(lectureCode);
+                    if (lectureToUpdate != null)
+                    {
+                        Console.WriteLine($"\nCurrent details: {lectureToUpdate.GetDetails()}");
+                        string newSubjectName = GetStringInput("Enter new subject name (or press Enter to keep current):");
+                        string newLecturerName = GetStringInput("Enter new lecturer name (or press Enter to keep current):");
+                        int? newLectureHours = null;
+                        string lectureHoursInput = GetStringInput("Enter new lecture hours (or press Enter to keep current):");
+                        if (!string.IsNullOrWhiteSpace(lectureHoursInput))
+                        {
+                            if (int.TryParse(lectureHoursInput, out int parsedHours) && parsedHours > 0)
+                            {
+                                newLectureHours = parsedHours;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Invalid input for lecture hours. Keeping current value.");
+                            }
+                        }
+
+                        // Update the lecture with the new details
+                        _lectureManager.UpdateLecture(lectureCode, 
+                                                      string.IsNullOrWhiteSpace(newSubjectName) ? null : newSubjectName,
+                                                      string.IsNullOrWhiteSpace(newLecturerName) ? null : newLecturerName,
+                                                      newLectureHours);
+                    }
+                    else
+                    {
+                        Console.WriteLine("\nLecture not found.");
+                    }
                     // Lecture updatedLecture = getNewLecture();
                     // if (updatedLecture != null)
                     // {
                     //     _lectureManager.UpdateLecture(updateCode, updatedLecture);
                     // }
                     break;
+                // Delete lecture
                 case "4":
                     // Console.WriteLine("Enter the lecture code to delete:");
                     string deleteCode = GetStringInput("Enter the lecture code to delete:");
-                    Lecture lectureToDelete = _lectureManager.GetLectureByCode(deleteCode);
+                    Lecture lectureToDelete = lectureManager.GetLectureByCode(deleteCode);
                     if (lectureToDelete != null)
                     {
                         Console.WriteLine($"\nAre you sure you want to delete the lecture: {lectureToDelete.GetDetails()}?");
@@ -121,7 +162,6 @@ class ConsoleUI(LectureManager lectureManager)
                 Console.WriteLine($"Invalid lecture code: {lectureCode}");
                 return null;
         }
-
     }
 
 

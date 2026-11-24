@@ -2,20 +2,20 @@ using LectureManagementSystem.Models;
 
 public class Astronomy : Lecture
 {
-    public string CelestialBody { get; set; } // Unikalna cecha dla astronomii
+    public string Galaxy { get; set; } // A unique subject code for astronomy lectures
     private static int _totalAstronomyLecturesCreated = 0; // Consider if you really need this static counter for Astronomy lectures
 
-    public Astronomy(string subjectName, string lecturerName, int lectureHours, string celestialBody) 
+    public Astronomy(string subjectName, string lecturerName, int lectureHours, string Galaxy) 
         : base("AS", subjectName, lecturerName, lectureHours)
     {
-        CelestialBody = celestialBody;
-        Console.WriteLine($"Astronomy lecture created: {SubjectCode} - {SubjectName} on {CelestialBody}");
+        this.Galaxy = Galaxy;
+        Console.WriteLine($"Astronomy lecture created: {SubjectCode} - {SubjectName} on {Galaxy}");
         _totalAstronomyLecturesCreated++;
     }
 
-    // Nadpisanie metody (Polimorfizm)
+    // Overriding the GetDetails method
     public override string GetDetails()
     {
-        return base.GetDetails() + $" | Celestial Body: {CelestialBody} (Type: Astronomy)";
+        return base.GetDetails() + $" | Celestial Body: {Galaxy} (Type: Astronomy)";
     }
 }

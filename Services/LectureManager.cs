@@ -13,6 +13,7 @@ class LectureManager
         _lectures = new List<Lecture>();
     }
 
+
     // Method to add a lecture
     public void AddLecture(Lecture lecture)
     {
@@ -26,6 +27,7 @@ class LectureManager
         Console.WriteLine("Lecture added successfully.");
     }
 
+
     public void DeleteLecture(Lecture lecture)
     {
         if (_lectures.Remove(lecture))
@@ -38,11 +40,11 @@ class LectureManager
         }
     }
 
+
     public bool DeleteLectureByIndex(int index)
     {
         if (index >= 0 && index < _lectures.Count)
         {
-            var lecture = _lectures[index];
             _lectures.RemoveAt(index);
             Console.WriteLine("Lecture deleted");
             return true;
@@ -55,6 +57,11 @@ class LectureManager
     }
 
 
+    /**
+    * Method to update a lecture's details based on its subject code
+    * An empty string or null value for any of the parameters means
+    * that particular detail will not be updated.
+    */
     public bool UpdateLecture(string subjectCode, string? newSubjectName,
                               string? newLecturerName, int? newLectureHours,
                               string? newSpecificDetail = null)
@@ -62,11 +69,12 @@ class LectureManager
         if (string.IsNullOrWhiteSpace(subjectCode))
             return false;
 
-        string normalizedCode = subjectCode.Trim().ToUpper();
-        Lecture? lecture = _lectures.FirstOrDefault(l => l.SubjectCode.Equals(normalizedCode, StringComparison.OrdinalIgnoreCase));
-
+        Lecture? lecture = GetLectureByCode(subjectCode.Trim().ToUpper());
         if (lecture == null)
+        {
+            Console.WriteLine("\nLecture not found.");
             return false;
+        }
 
         if (!string.IsNullOrWhiteSpace(newSubjectName))
             lecture.SubjectName = newSubjectName.Trim();
@@ -77,20 +85,35 @@ class LectureManager
         if (newLectureHours.HasValue)
         {
             if (newLectureHours.Value <= 0)
-                throw new ArgumentOutOfRangeException(nameof(newLectureHours), "Lecture hours must be a positive number.");
+                Console.WriteLine("Lecture hours must be a positive number.");
 
             lecture.LectureHours = newLectureHours.Value;
         }
 
-        if (lecture is Programming programmingLecture && !string.IsNullOrWhiteSpace(newSpecificDetail))
+        if (!string.IsNullOrWhiteSpace(newSpecificDetail))
         {
-            programmingLecture.ProgrammingLanguage = newSpecificDetail.Trim();
+            string trimmedSpecific = newSpecificDetail.Trim();
+            switch (lecture)
+            {
+                case Programming programming:
+                    programming.ProgrammingLanguage = trimmedSpecific;
+                    break;
+                case Astronomy astronomy:
+                    astronomy.Galaxy = trimmedSpecific;
+                    break;
+                case Mycology mycology:
+                    mycology.FungiType = trimmedSpecific;
+                    break;
+            }
         }
-
         // SaveToFile();
         return true;
     }
 
+
+    /**
+    * Method to display all lectures in the list
+    */
     public void DisplayAllLectures()
     {
         Console.WriteLine("\nAll Lectures:");
@@ -99,6 +122,7 @@ class LectureManager
             Console.WriteLine(lecture.GetDetails());
         }
     }
+
 
     /**
     * Method to get the total number of lectures in the list
