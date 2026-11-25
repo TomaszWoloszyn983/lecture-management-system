@@ -81,7 +81,7 @@ class ConsoleUI(LectureManager lectureManager)
                                                     _ => ""
                                                 });
                         
-                        // Update the lecture with the new details
+                        // Update the lecture with the new information, 
                         _lectureManager.UpdateLecture(lectureCode, 
                                                       string.IsNullOrWhiteSpace(newSubjectName) ? null : newSubjectName,
                                                       string.IsNullOrWhiteSpace(newLecturerName) ? null : newLecturerName,
@@ -92,12 +92,8 @@ class ConsoleUI(LectureManager lectureManager)
                     {
                         Console.WriteLine("\nLecture not found.");
                     }
-                    // Lecture updatedLecture = getNewLecture();
-                    // if (updatedLecture != null)
-                    // {
-                    //     _lectureManager.UpdateLecture(updateCode, updatedLecture);
-                    // }
                     break;
+
                 // Delete lecture
                 case "4":
                     // Console.WriteLine("Enter the lecture code to delete:");
@@ -124,6 +120,11 @@ class ConsoleUI(LectureManager lectureManager)
                     {
                         Console.WriteLine("\nLecture not found.");
                     }
+                    break;
+                case "0":
+                    running = false;
+                    lectureManager.SaveToFile();
+                    Console.WriteLine("\nExiting the application. Goodbye!");
                     break;
                 default:
                     Console.WriteLine("\nInvalid option. Please try again.");

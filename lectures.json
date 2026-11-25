@@ -1,0 +1,26 @@
+[
+  {
+    "$type": "programming",
+    "ProgrammingLanguage": "C#",
+    "SubjectCode": "PR_0001",
+    "SubjectName": "Introduction to Programming",
+    "LecturerName": "Dr. Parker",
+    "LectureHours": 40
+  },
+  {
+    "$type": "mycology",
+    "FungiType": "Edible",
+    "SubjectCode": "MY_0002",
+    "SubjectName": "Introduction to Mycology",
+    "LecturerName": "Dr. Banner",
+    "LectureHours": 30
+  },
+  {
+    "$type": "astronomy",
+    "CelestialBody": "Moon",
+    "SubjectCode": "AS_0003",
+    "SubjectName": "Teh Dark Side Of The moon",
+    "LecturerName": "Dr. Octavius",
+    "LectureHours": 10
+  }
+]

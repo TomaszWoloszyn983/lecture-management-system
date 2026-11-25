@@ -1,11 +1,16 @@
 using LectureManagementSystem.Models;
+using System.Text.Json;
 
 class LectureManager
 {
 
     // Create a list to hold lectures
     private List<Lecture> _lectures;
-
+    private readonly string _filePath = "lectures.json";
+    private static readonly JsonSerializerOptions JsonOptions = new()
+    {
+        WriteIndented = true 
+    };
 
     // Constructor
     public LectureManager()
@@ -73,11 +78,6 @@ class LectureManager
         }
 
         Lecture? lecture = GetLectureByCode(subjectCode.Trim().ToUpper());
-        // if (lecture == null)
-        // {
-        //     Console.WriteLine("\nLecture not found!");
-        //     return false;
-        // }
 
         if (!string.IsNullOrWhiteSpace(newSubjectName))
             lecture.SubjectName = newSubjectName.Trim();
@@ -106,7 +106,7 @@ class LectureManager
                     break;
             }
         }
-        // SaveToFile();
+        // SaveToFile(_lectures);
         return true;
     }
 
@@ -142,6 +142,18 @@ class LectureManager
 
         return _lectures.FirstOrDefault(lecture =>
             lecture.SubjectCode.Equals(normalizedCode, StringComparison.OrdinalIgnoreCase));
+    }
+
+    public void SaveToFile(List<Lecture> lectures)
+    {
+        string json = JsonSerializer.Serialize(lectures, JsonOptions);
+        File.WriteAllText(_filePath, json);
+    }
+
+        public void SaveToFile()
+    {
+        string json = JsonSerializer.Serialize( _lectures, JsonOptions);
+        File.WriteAllText(_filePath, json);
     }
 
 

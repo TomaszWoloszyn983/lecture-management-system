@@ -1,5 +1,11 @@
 namespace LectureManagementSystem.Models;
 
+using System.Text.Json.Serialization;
+
+[JsonPolymorphic(TypeDiscriminatorPropertyName = "$type")]
+[JsonDerivedType(typeof(Programming), typeDiscriminator: "programming")]
+[JsonDerivedType(typeof(Astronomy), typeDiscriminator: "astronomy")]
+[JsonDerivedType(typeof(Mycology), typeDiscriminator: "mycology")]
 public abstract class Lecture
 {
     // A static counter to keep track of the total number of lectures created
