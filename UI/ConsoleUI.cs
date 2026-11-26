@@ -221,19 +221,19 @@ class ConsoleUI(LectureManager lectureManager)
     }
 
     private static int ReadPositiveIntOrDefault(string prompt, int currentValue)
-{
-    while (true)
     {
-        Console.Write($"{prompt} [{currentValue}]: ");
-        string? input = Console.ReadLine();
+        while (true)
+        {
+            Console.Write($"{prompt} [{currentValue}]: ");
+            string? input = Console.ReadLine();
 
-        if (string.IsNullOrWhiteSpace(input))
-            return currentValue;
+            if (string.IsNullOrWhiteSpace(input))
+                return currentValue;
 
-        if (int.TryParse(input.Trim(), out int parsedValue) && parsedValue > 0)
-            return parsedValue;
+            if (int.TryParse(input.Trim(), out int parsedValue) && parsedValue > 0)
+                return parsedValue;
 
-        Console.WriteLine("Enter a valid positive integer or press Enter to keep the current value.");
+            Console.WriteLine("Enter a valid positive integer or press Enter to keep the current value.");
+        }
     }
-}
 }

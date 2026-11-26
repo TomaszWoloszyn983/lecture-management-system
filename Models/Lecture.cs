@@ -58,7 +58,7 @@ public abstract class Lecture
         A method that allows the lecture counter to be set to a specific value.
         Used to initialize the counter with a value retrieved from a file.
     */
-    public void SetLectureCounter(int countValue)
+    public static void SetLectureCounter(int countValue)
     {
         _totalLecturesCreated = countValue;
     }

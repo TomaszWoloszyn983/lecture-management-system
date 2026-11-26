@@ -6,7 +6,7 @@ class LectureManager
 
     // Create a list to hold lectures
     private List<Lecture> _lectures;
-    private readonly string _filePath = "lectures.json";
+    private readonly string _filePath = "lecturesdata.json";
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
         WriteIndented = true 
@@ -16,6 +16,8 @@ class LectureManager
     public LectureManager()
     {
         _lectures = new List<Lecture>();
+        LoadFromFile();
+        
     }
 
 
@@ -146,14 +148,55 @@ class LectureManager
 
     public void SaveToFile(List<Lecture> lectures)
     {
-        string json = JsonSerializer.Serialize(lectures, JsonOptions);
+        var storageData = new LectureStorageData
+        {
+            TotalLecturesCreated = Lecture.TotalLecturesCreated,
+            Lectures = lectures
+        };
+        string json = JsonSerializer.Serialize(storageData, JsonOptions);
         File.WriteAllText(_filePath, json);
     }
 
         public void SaveToFile()
     {
-        string json = JsonSerializer.Serialize( _lectures, JsonOptions);
+        var storageData = new LectureStorageData
+        {
+            TotalLecturesCreated = Lecture.TotalLecturesCreated,
+            Lectures = _lectures
+        };
+        string json = JsonSerializer.Serialize(storageData, JsonOptions);
         File.WriteAllText(_filePath, json);
+    }
+
+    public void LoadFromFile()
+    {
+        if (!File.Exists(_filePath))
+            return;
+
+        string json = File.ReadAllText(_filePath);
+        if (string.IsNullOrWhiteSpace(json))
+        {
+            Lecture.SetLectureCounter(0); // Reset the counter if the file is empty
+            return;
+        }
+
+        LectureStorageData? storageData = JsonSerializer.Deserialize<LectureStorageData>(json, JsonOptions);
+        if (storageData == null)
+            return;
+
+        Lecture.SetLectureCounter(storageData.TotalLecturesCreated);
+        _lectures.Clear();
+        foreach (Lecture lecture in storageData.Lectures)
+        {
+            if (string.IsNullOrWhiteSpace(lecture.SubjectCode) || lecture.LectureHours <= 0)
+                continue;
+
+            bool codeExists = _lectures.Any(l =>
+                l.SubjectCode.Equals(lecture.SubjectCode, StringComparison.OrdinalIgnoreCase));
+
+            if (!codeExists)
+                _lectures.Add(lecture);
+        }
     }
 
 

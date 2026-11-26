@@ -1,26 +1,26 @@
 [
   {
     "$type": "programming",
-    "ProgrammingLanguage": "C#",
+    "ProgrammingLanguage": "Viper",
     "SubjectCode": "PR_0001",
-    "SubjectName": "Introduction to Programming",
-    "LecturerName": "Dr. Parker",
-    "LectureHours": 40
+    "SubjectName": "Ultorn Project",
+    "LecturerName": "Dr. Banner \u0026 Tony Stark",
+    "LectureHours": 24
   },
   {
     "$type": "mycology",
-    "FungiType": "Edible",
+    "FungiType": "General",
     "SubjectCode": "MY_0002",
-    "SubjectName": "Introduction to Mycology",
-    "LecturerName": "Dr. Banner",
-    "LectureHours": 30
+    "SubjectName": "Introduction to Mykology",
+    "LecturerName": "Dr. Strange",
+    "LectureHours": 105
   },
   {
     "$type": "astronomy",
-    "CelestialBody": "Moon",
+    "CelestialBody": "Galaxies",
     "SubjectCode": "AS_0003",
-    "SubjectName": "Teh Dark Side Of The moon",
-    "LecturerName": "Dr. Octavius",
-    "LectureHours": 10
+    "SubjectName": "Introduction to Milkyway",
+    "LecturerName": "Dr. Doom",
+    "LectureHours": 55
   }
 ]
