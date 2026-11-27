@@ -4,15 +4,14 @@ class Program{
     static void Main(string[] args){
 
         Console.WriteLine("\n\n\nWelcome to the Lecture Management System!\n\n\t\t!!!\n\n");
+
         // think if you want to load lectures from a file here, if you implement file handling
         LectureManager lectureManager = new();
-
                Console.WriteLine($"\n\nLectures in the list: {lectureManager.GetTotalLectures()}"
                          +$"\nTotal lectures created: {Lecture.TotalLecturesCreated}");
        
         new ConsoleUI(lectureManager).run();
         
-        Console.WriteLine("Exiting the program...");
 
         
     }

@@ -32,7 +32,6 @@ class ConsoleUI(LectureManager lectureManager)
                 case "1":
                 if (_lectureManager.GetTotalLectures() > 0)
                     {
-                        Console.WriteLine("\nLectures in the list:");
                         _lectureManager.DisplayAllLectures();
                     }
                     else

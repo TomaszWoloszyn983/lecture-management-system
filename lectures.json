@@ -22,5 +22,29 @@
     "SubjectName": "Introduction to Milkyway",
     "LecturerName": "Dr. Doom",
     "LectureHours": 55
+  },
+  {
+    "$type": "programming",
+    "ProgrammingLanguage": "Viper",
+    "SubjectCode": "PR_0001",
+    "SubjectName": "Ultron Project",
+    "LecturerName": "Stark \u0026 Dr.Banner",
+    "LectureHours": 55
+  },
+  {
+    "$type": "mycology",
+    "FungiType": "Mushrooms",
+    "SubjectCode": "MY_0003",
+    "SubjectName": "Introduction To Mykology",
+    "LecturerName": "Dr. Kossack",
+    "LectureHours": 5
+  },
+  {
+    "$type": "programming",
+    "ProgrammingLanguage": "Spider Net",
+    "SubjectCode": "PR_0004",
+    "SubjectName": "Bugs And Spiders",
+    "LecturerName": "Dr. Parker",
+    "LectureHours": 25
   }
 ]

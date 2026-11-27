@@ -1,18 +1,34 @@
 {
-  "TotalLecturesCreated": 4,
+  "TotalLecturesCreated": 7,
   "Lectures": [
     {
       "$type": "programming",
       "ProgrammingLanguage": "Viper",
       "SubjectCode": "PR_0001",
-      "SubjectName": "Ultron Project",
-      "LecturerName": "Stark \u0026 Dr.Banner",
+      "SubjectName": "Ultorn Project",
+      "LecturerName": "Dr. Banner \u0026 Tony Stark",
+      "LectureHours": 24
+    },
+    {
+      "$type": "mycology",
+      "FungiType": "General",
+      "SubjectCode": "MY_0002",
+      "SubjectName": "Introduction to Mykology",
+      "LecturerName": "Dr. Strange",
+      "LectureHours": 105
+    },
+    {
+      "$type": "astronomy",
+      "CelestialBody": "Galaxies",
+      "SubjectCode": "AS_0003",
+      "SubjectName": "Introduction to Milkyway",
+      "LecturerName": "Dr. Doom",
       "LectureHours": 55
     },
     {
       "$type": "mycology",
       "FungiType": "Mushrooms",
-      "SubjectCode": "MY_0003",
+      "SubjectCode": "MY_0005",
       "SubjectName": "Introduction To Mykology",
       "LecturerName": "Dr. Kossack",
       "LectureHours": 5
@@ -20,10 +36,18 @@
     {
       "$type": "programming",
       "ProgrammingLanguage": "Spider Net",
-      "SubjectCode": "PR_0004",
+      "SubjectCode": "PR_0006",
       "SubjectName": "Bugs And Spiders",
       "LecturerName": "Dr. Parker",
       "LectureHours": 25
+    },
+    {
+      "$type": "astronomy",
+      "CelestialBody": "Galaxies",
+      "SubjectCode": "AS_0007",
+      "SubjectName": "Intruduction To Solar Systems",
+      "LecturerName": "Dr. Victor Von Doom",
+      "LectureHours": 45
     }
   ]
 }

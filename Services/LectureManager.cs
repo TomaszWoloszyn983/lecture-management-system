@@ -26,6 +26,7 @@ class LectureManager
     {
         _lectures.Add(lecture);
         Console.WriteLine("Lecture added successfully.");
+        SaveToFile(_lectures);
     }
 
     internal void AddLecture(Programming programming)
@@ -40,6 +41,7 @@ class LectureManager
         if (_lectures.Remove(lecture))
         {
             Console.WriteLine("Lecture deleted");
+            SaveToFile(_lectures);
         }
         else
         {
@@ -54,6 +56,7 @@ class LectureManager
         {
             _lectures.RemoveAt(index);
             Console.WriteLine("Lecture deleted");
+            SaveToFile(_lectures);
             return true;
         }
         else
@@ -107,9 +110,14 @@ class LectureManager
                     mycology.FungiType = trimmedSpecific;
                     break;
             }
+            SaveToFile(_lectures);
+            Console.WriteLine("Lecture updated successfully.");
+            return true;
+        }else
+        {
+            Console.WriteLine("\nLecture not found!");
+            return false;
         }
-        // SaveToFile(_lectures);
-        return true;
     }
 
 
