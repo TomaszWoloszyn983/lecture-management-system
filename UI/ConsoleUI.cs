@@ -1,129 +1,51 @@
 using LectureManagementSystem.Models;
+// using LectureManagementSystem.Services;
 
-class ConsoleUI(LectureManager lectureManager)
+class ConsoleUI()
 {
-    private LectureManager _lectureManager = lectureManager;
+    private LectureManager _lectureManager = new LectureManager();
 
+    /**
+    * The main loop of the console application.
+    * It displays the menu, takes user input, 
+    * and calls the appropriate methods based on the user's choice.
+    */
     public void run()
     {
         bool running = true;
         Console.Clear();
         while (running)
         {
-            Console.WriteLine("\n-----------------------------------"
-                            +"\n==== LECTURE MANAGEMENT SYSTEM ===="
-                            +"\n-----------------------------------"
-                            +"\n\nSELECT AN OPTION:"
-                            +"\n\t1 to Display All Lectures"
-                            +"\n\t2 to Add Lecture"
-                            +"\n\t3 to Update Lecture"
-                            +"\n\t4 to Delete Lecture"
-                            +"\n\t0 to Exit");
-            String? userChoice = Console.ReadKey().KeyChar.ToString();
-            Console.WriteLine("You selected option: " + userChoice); // Move to the next line after user input
-            if (userChoice == "0")
-            {
-                running = false;
-            }
+            PrintMenu();
+            String? userChoice = Console.ReadKey(intercept: true).KeyChar.ToString();
 
             switch (userChoice)
             {
-                // Display all lectures
                 case "1":
-                if (_lectureManager.GetTotalLectures() > 0)
-                    {
-                        _lectureManager.DisplayAllLectures();
-                    }
-                    else
-                    {
-                        Console.WriteLine("\nNo lectures available yet.");
-                    }
+                    // Display all lectures
+                    DisplayAllLecturesOption();
                     break;
 
-                // Add lecture
                 case "2":
-                    Lecture newLecture = getNewLecture();
-                    if (newLecture != null)
-                    {
-                        _lectureManager.AddLecture(newLecture);
-                    }
+                    // Add lecture
+                    _lectureManager.AddLecture(getNewLecture());
                     break;
 
-                // Update lecture
                 case "3":
-                    /*
-                    * The update process is interactive. It prompts the user for each detail.
-                    * If the user presses Enter without typing anything, the current value is retained.
-                    * This allows for selective updating of lecture details.
-                    */      
-                    string lectureCode = ReadStringInput("Enter the lecture code to update:");
-                    Lecture lectureToUpdate = lectureManager.GetLectureByCode(lectureCode);
-                    if (lectureToUpdate != null)
-                    {
-                        Console.WriteLine($"\nCurrent details: {lectureToUpdate.GetDetails()}");
-                        string newSubjectName = ReadStringOrDefault(
-                                                "Enter new subject name (or press Enter to keep current):", 
-                                                lectureToUpdate.SubjectName);
-                        string newLecturerName = ReadStringOrDefault(
-                                                "Enter new lecturer name (or press Enter to keep current):", 
-                                                lectureToUpdate.LecturerName);
-                        int newLectureHours = ReadPositiveIntOrDefault(
-                                                "Enter new lecture hours (or press Enter to keep current):",
-                                                lectureToUpdate.LectureHours);
-                        string newSpecificDetail = ReadStringOrDefault(
-                                                "Enter new specific detail (or press Enter to keep current):", 
-                                                lectureToUpdate switch
-                                                {
-                                                    Programming p => p.ProgrammingLanguage,
-                                                    Astronomy a => a.CelestialBody,
-                                                    Mycology m => m.FungiType,
-                                                    _ => ""
-                                                });
-                        
-                        // Update the lecture with the new information, 
-                        _lectureManager.UpdateLecture(lectureCode, 
-                                                      string.IsNullOrWhiteSpace(newSubjectName) ? null : newSubjectName,
-                                                      string.IsNullOrWhiteSpace(newLecturerName) ? null : newLecturerName,
-                                                      newLectureHours,
-                                                      string.IsNullOrWhiteSpace(newSpecificDetail) ? null : newSpecificDetail);
-                    }
-                    else
-                    {
-                        Console.WriteLine("\nLecture not found.");
-                    }
+                    // Update lecture
+                    UpdateLectureOption();
                     break;
 
-                // Delete lecture
                 case "4":
-                    // Console.WriteLine("Enter the lecture code to delete:");
-                    string deleteCode = ReadStringInput("Enter the lecture code to delete:");
-                    Lecture lectureToDelete = lectureManager.GetLectureByCode(deleteCode);
-                    if (lectureToDelete != null)
-                    {
-                        Console.WriteLine($"\nAre you sure you want to delete the lecture: {lectureToDelete.GetDetails()}?");
-                        string confirmation = ReadStringInput("Type 'yes' to confirm deletion or 'no' to cancel:");
-                        if (confirmation.ToUpper() == "YES")
-                        {
-                            _lectureManager.DeleteLecture(lectureToDelete);
-                        }
-                        else if (confirmation.ToUpper() == "NO")
-                        {
-                            Console.WriteLine("\nDeletion cancelled.");
-                        }
-                        else
-                        {
-                            Console.WriteLine("\nIncorrect confirmation. Deletion cancelled.");
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("\nLecture not found.");
-                    }
+                    // Delete lecture
+                    DeleteLectureOption();
                     break;
+
                 case "0":
+                    // Exit application
                     running = false;
-                    lectureManager.SaveToFile();
-                    Console.WriteLine("\nExiting the application. Goodbye!");
+                    _lectureManager.SaveToFile();
+                    Console.WriteLine("\nSaving changes and exiting application.");
                     break;
                 default:
                     Console.WriteLine("\nInvalid option. Please try again.");
@@ -131,7 +53,67 @@ class ConsoleUI(LectureManager lectureManager)
             }
         }
     }
+ 
+
+    /**
+    * Prints the main menu options to the console.
+    */
+    private static void PrintMenu()
+    {
+        Console.WriteLine("\n-------------------------------------------------------------------"
+                        +"\n==================== LECTURE MANAGEMENT SYSTEM ===================="
+                        +"\n-------------------------------------------------------------------"
+                        +"\n\n\t\t\tSELECT AN OPTION:"
+                        +"\n\n1 to Display All Lectures"
+                        +"\n2 to Add Lecture"
+                        +"\n3 to Update Lecture"
+                        +"\n4 to Delete Lecture"
+                        +"\n0 to Exit");
+        Console.Write("\n> ");
+    }
+
+
+    /**
+    * Displays all lectures in the lecture manager.
+    */
+    private void DisplayAllLecturesOption()
+    {
+        Console.WriteLine("\n==================== ALL LECTURES "
+                            +$"({_lectureManager.GetTotalLectures()}) ====================");
+        if (_lectureManager.GetTotalLectures() > 0)
+        {
+            Console.WriteLine($"{"CODE",-8} | {"TYPE",-11} | {"HOURS",5} | {"SUBJECT",-28} | {"LECTURER",-22} | {"DETAIL"}");
+            Console.WriteLine(new string('-', 108));
+
+            foreach (var lecture in _lectureManager.Lectures)
+            {
+                Console.WriteLine($"{lecture.SubjectCode,-8} | {lecture.GetType().Name,-11} | "
+                                 +$"{lecture.LectureHours,5} | {lecture.SubjectName,-28} | "
+                                 +$"{lecture.LecturerName,-22} | {lecture switch
+                                    {
+                                        Programming p => p.ProgrammingLanguage,
+                                        Astronomy a => a.CelestialBody,
+                                        Mycology m => m.FungiType,
+                                        _ => ""
+                                    }}"
+                                );
+            }
+        }
+        else
+        {
+            Console.WriteLine("No lectures available yet.");
+        }
+    }
     
+    
+    
+
+    /**
+    * Prompts the user to enter details for a new lecture.  
+    * Switches based on the lecture code 
+    * to create the appropriate lecture type (Programming, Mycology, or Astronomy).
+    * The function returns the newly created lecture object or null if the lecture code is invalid.
+    */
     public Lecture getNewLecture()
     {   Object[] inputParts = new Object[5];
         Console.WriteLine("\n\nEnter lecture code"
@@ -167,6 +149,81 @@ class ConsoleUI(LectureManager lectureManager)
     }
 
 
+    /*
+    * The update process is interactive. It prompts the user for each detail.
+    * If the user presses Enter without typing anything, the current value is retained.
+    * This allows for selective updating of lecture details.
+    */      
+    public void UpdateLectureOption()
+    {
+        string lectureCode = ReadStringInput("Enter the lecture code to update:");
+        Lecture lectureToUpdate = _lectureManager.GetLectureByCode(lectureCode);
+        if (lectureToUpdate != null)
+        {
+            Console.WriteLine($"\nCurrent details: {lectureToUpdate.GetDetails()}");
+            string newSubjectName = ReadStringOrDefault(
+                                    "Enter new subject name (or press Enter to keep current):", 
+                                    lectureToUpdate.SubjectName);
+            string newLecturerName = ReadStringOrDefault(
+                                    "Enter new lecturer name (or press Enter to keep current):", 
+                                    lectureToUpdate.LecturerName);
+            int newLectureHours = ReadPositiveIntOrDefault(
+                                    "Enter new lecture hours (or press Enter to keep current):",
+                                    lectureToUpdate.LectureHours);
+            string newSpecificDetail = ReadStringOrDefault(
+                                    "Enter new specific detail (or press Enter to keep current):", 
+                                    lectureToUpdate switch
+                                    {
+                                        Programming p => p.ProgrammingLanguage,
+                                        Astronomy a => a.CelestialBody,
+                                        Mycology m => m.FungiType,
+                                        _ => ""
+                                    });
+            
+            // Update the lecture with the new information, 
+            _lectureManager.UpdateLecture(lectureCode, 
+                                            string.IsNullOrWhiteSpace(newSubjectName) ? null : newSubjectName,
+                                            string.IsNullOrWhiteSpace(newLecturerName) ? null : newLecturerName,
+                                            newLectureHours,
+                                            string.IsNullOrWhiteSpace(newSpecificDetail) ? null : newSpecificDetail);
+        }else
+        {
+            Console.WriteLine("\nLecture not found.");
+        }
+    }
+
+
+    /**
+    * Deletes a lecture based on the lecture code provided by the user. 
+    * It first checks if the lecture exists,
+    * then asks for confirmation before deletion.
+    */
+    public void DeleteLectureOption()
+    {
+     string deleteCode = ReadStringInput("Enter the lecture code to delete:");
+        Lecture lectureToDelete = _lectureManager.GetLectureByCode(deleteCode);
+        if (lectureToDelete != null)
+        {
+            Console.WriteLine($"\nAre you sure you want to delete the lecture: \n{lectureToDelete.GetDetails()}?");
+            string confirmation = ReadStringInput("\n\nType 'yes' to confirm deletion or 'no' to cancel:");
+            if (confirmation.ToUpper() == "YES")
+            {
+                _lectureManager.DeleteLecture(lectureToDelete);
+            }else if (confirmation.ToUpper() == "NO")
+            {
+                Console.WriteLine("\nDeletion cancelled.");
+            }else
+            {
+                Console.WriteLine("\nIncorrect confirmation. Deletion cancelled.");
+            }
+        }
+        else
+        {
+            Console.WriteLine("\nLecture not found.");
+        }
+    }
+
+
     /**
     * A method to get a non-empty string input from the user.
     * It prompts the user until a valid non-empty string is entered.
@@ -183,6 +240,7 @@ class ConsoleUI(LectureManager lectureManager)
         } while (string.IsNullOrWhiteSpace(input));
         return input;
     }
+
 
     /**
     * A method to get a string input from the user, allowing for a default value.
@@ -219,6 +277,11 @@ class ConsoleUI(LectureManager lectureManager)
         return input;
     }
 
+
+    /**
+     * A method to get a positive integer input from the user, allowing for a default value.
+     * If the user enters an empty string, the current value is returned.
+     */
     private static int ReadPositiveIntOrDefault(string prompt, int currentValue)
     {
         while (true)

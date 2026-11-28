@@ -5,7 +5,7 @@ class LectureManager
 {
 
     // Create a list to hold lectures
-    private List<Lecture> _lectures;
+    public List<Lecture> Lectures { get; private set;}
     private readonly string _filePath = "lecturesdata.json";
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
@@ -15,7 +15,7 @@ class LectureManager
     // Constructor
     public LectureManager()
     {
-        _lectures = new List<Lecture>();
+        Lectures = new List<Lecture>();
         LoadFromFile();
         
     }
@@ -24,24 +24,30 @@ class LectureManager
     // Method to add a lecture
     public void AddLecture(Lecture lecture)
     {
-        _lectures.Add(lecture);
-        Console.WriteLine("Lecture added successfully.");
-        SaveToFile(_lectures);
+        if (lecture != null)
+        {
+            Lectures.Add(lecture);
+            Console.WriteLine("Lecture added successfully.");
+            SaveToFile();
+        }
     }
 
     internal void AddLecture(Programming programming)
     {
-        _lectures.Add(programming);
+        Lectures.Add(programming);
         Console.WriteLine("Lecture added successfully.");
     }
 
 
+    /**
+    * Method to delete a lecture from the list  
+    */   
     public void DeleteLecture(Lecture lecture)
     {
-        if (_lectures.Remove(lecture))
+        if (Lectures.Remove(lecture))
         {
             Console.WriteLine("Lecture deleted");
-            SaveToFile(_lectures);
+            SaveToFile();
         }
         else
         {
@@ -52,11 +58,11 @@ class LectureManager
 
     public bool DeleteLectureByIndex(int index)
     {
-        if (index >= 0 && index < _lectures.Count)
+        if (index >= 0 && index < Lectures.Count)
         {
-            _lectures.RemoveAt(index);
+            Lectures.RemoveAt(index);
             Console.WriteLine("Lecture deleted");
-            SaveToFile(_lectures);
+            SaveToFile();
             return true;
         }
         else
@@ -110,7 +116,7 @@ class LectureManager
                     mycology.FungiType = trimmedSpecific;
                     break;
             }
-            SaveToFile(_lectures);
+            SaveToFile();
             Console.WriteLine("Lecture updated successfully.");
             return true;
         }else
@@ -127,10 +133,16 @@ class LectureManager
     public void DisplayAllLectures()
     {
         Console.WriteLine("\nAll Lectures:");
-        foreach (var lecture in _lectures)
+        foreach (var lecture in Lectures)
         {
             Console.WriteLine(lecture.GetDetails());
         }
+    }
+
+
+    List<Lecture> getLectureList()
+    {
+         return Lectures;
     }
 
 
@@ -139,10 +151,13 @@ class LectureManager
     */
     public int GetTotalLectures()
     {
-        return _lectures.Count;
+        return Lectures.Count;
     }
 
-
+    /**
+    * Method to get a lecture by its subject code.  
+    * Returns null if the lecture is not found or if the input is invalid.
+    */
     public Lecture? GetLectureByCode(string subjectCode)
     {
         if (string.IsNullOrWhiteSpace(subjectCode))
@@ -150,32 +165,30 @@ class LectureManager
 
         string normalizedCode = subjectCode.Trim().ToUpper();
 
-        return _lectures.FirstOrDefault(lecture =>
+        return Lectures.FirstOrDefault(lecture =>
             lecture.SubjectCode.Equals(normalizedCode, StringComparison.OrdinalIgnoreCase));
     }
 
-    public void SaveToFile(List<Lecture> lectures)
-    {
-        var storageData = new LectureStorageData
-        {
-            TotalLecturesCreated = Lecture.TotalLecturesCreated,
-            Lectures = lectures
-        };
-        string json = JsonSerializer.Serialize(storageData, JsonOptions);
-        File.WriteAllText(_filePath, json);
-    }
 
+    /**
+    * Saves the current state of lectures to a JSON file.
+    * It serializes the list of lectures and the total number of lectures created.  
+    */
         public void SaveToFile()
     {
         var storageData = new LectureStorageData
         {
             TotalLecturesCreated = Lecture.TotalLecturesCreated,
-            Lectures = _lectures
+            Lectures = Lectures
         };
         string json = JsonSerializer.Serialize(storageData, JsonOptions);
         File.WriteAllText(_filePath, json);
     }
 
+    /**
+     * Loads lectures from a JSON file. If the file doesn't exist or is empty, it resets the lecture counter.
+     * It also ensures that only valid lectures (with non-empty subject codes and positive lecture hours) are loaded into the list.
+     */
     public void LoadFromFile()
     {
         if (!File.Exists(_filePath))
@@ -193,17 +206,17 @@ class LectureManager
             return;
 
         Lecture.SetLectureCounter(storageData.TotalLecturesCreated);
-        _lectures.Clear();
+        Lectures.Clear();
         foreach (Lecture lecture in storageData.Lectures)
         {
             if (string.IsNullOrWhiteSpace(lecture.SubjectCode) || lecture.LectureHours <= 0)
                 continue;
 
-            bool codeExists = _lectures.Any(l =>
+            bool codeExists = Lectures.Any(l =>
                 l.SubjectCode.Equals(lecture.SubjectCode, StringComparison.OrdinalIgnoreCase));
 
             if (!codeExists)
-                _lectures.Add(lecture);
+                Lectures.Add(lecture);
         }
     }
 

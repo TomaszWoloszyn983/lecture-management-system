@@ -1,11 +1,11 @@
 {
-  "TotalLecturesCreated": 7,
+  "TotalLecturesCreated": 17,
   "Lectures": [
     {
       "$type": "programming",
       "ProgrammingLanguage": "Viper",
       "SubjectCode": "PR_0001",
-      "SubjectName": "Ultorn Project",
+      "SubjectName": "Project Ultron",
       "LecturerName": "Dr. Banner \u0026 Tony Stark",
       "LectureHours": 24
     },
@@ -21,33 +21,73 @@
       "$type": "astronomy",
       "CelestialBody": "Galaxies",
       "SubjectCode": "AS_0003",
-      "SubjectName": "Introduction to Milkyway",
+      "SubjectName": "Introduction To Galaxies",
       "LecturerName": "Dr. Doom",
       "LectureHours": 55
     },
     {
-      "$type": "mycology",
-      "FungiType": "Mushrooms",
-      "SubjectCode": "MY_0005",
-      "SubjectName": "Introduction To Mykology",
-      "LecturerName": "Dr. Kossack",
-      "LectureHours": 5
-    },
-    {
       "$type": "programming",
-      "ProgrammingLanguage": "Spider Net",
+      "ProgrammingLanguage": "SpiderNet",
       "SubjectCode": "PR_0006",
-      "SubjectName": "Bugs And Spiders",
+      "SubjectName": "Errors, Bugs And Spiders",
       "LecturerName": "Dr. Parker",
       "LectureHours": 25
     },
     {
       "$type": "astronomy",
       "CelestialBody": "Galaxies",
-      "SubjectCode": "AS_0007",
-      "SubjectName": "Intruduction To Solar Systems",
-      "LecturerName": "Dr. Victor Von Doom",
+      "SubjectCode": "AS_0008",
+      "SubjectName": "Between Venus and Mars",
+      "LecturerName": "Dr. Reed Richards",
+      "LectureHours": 99
+    },
+    {
+      "$type": "mycology",
+      "FungiType": "Mushrooms",
+      "SubjectCode": "MY_0009",
+      "SubjectName": "Properties of mushrooms that no one knows about",
+      "LecturerName": "Dr. Mario",
+      "LectureHours": 15
+    },
+    {
+      "$type": "mycology",
+      "FungiType": "Edible Mushrooms",
+      "SubjectCode": "MY_0011",
+      "SubjectName": "Power of Yeasts",
+      "LecturerName": "Dr. Kurt Connors",
+      "LectureHours": 25
+    },
+    {
+      "$type": "astronomy",
+      "CelestialBody": "Universes",
+      "SubjectCode": "AS_0012",
+      "SubjectName": "Across the Universes and Beyond",
+      "LecturerName": "Beyonder",
+      "LectureHours": 1
+    },
+    {
+      "$type": "programming",
+      "ProgrammingLanguage": "Scratch",
+      "SubjectCode": "PR_0013",
+      "SubjectName": "Scratch",
+      "LecturerName": "Elon Musk",
+      "LectureHours": 2
+    },
+    {
+      "$type": "mycology",
+      "FungiType": "Edible non-edible",
+      "SubjectCode": "MY_0015",
+      "SubjectName": "Mycorrhiza",
+      "LecturerName": "Dr Fly-Bane",
       "LectureHours": 45
+    },
+    {
+      "$type": "astronomy",
+      "CelestialBody": "Milky way",
+      "SubjectCode": "AS_0017",
+      "SubjectName": "Dwarf Planets",
+      "LecturerName": "Prof Xavier",
+      "LectureHours": 13
     }
   ]
 }
