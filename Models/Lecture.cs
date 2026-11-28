@@ -19,7 +19,7 @@ public abstract class Lecture
     public int LectureHours { get; set; }
 
     // Base constructor
-    protected Lecture(string subjectCode, string subjectName, 
+    public Lecture(string subjectCode, string subjectName, 
                       string lecturerName, int lectureHours)
     {
         SubjectCode = GenerateSubjectCode(subjectCode); // Generate a unique subject code
@@ -33,6 +33,7 @@ public abstract class Lecture
         );
     }
 
+
     /* 
         A virtual method to get lecture details,
         which can be overridden by derived classes
@@ -42,6 +43,7 @@ public abstract class Lecture
         return $"Code: {SubjectCode} | Name: {SubjectName}"
               +$" | Lecturer: {LecturerName} | Hours: {LectureHours}h";
     }
+
 
     /**
         A private method to generate a unique subject code based 
@@ -53,6 +55,7 @@ public abstract class Lecture
     private string GenerateSubjectCode(String LectureCode) {
         return LectureCode+$"_{++_totalLecturesCreated:D4}"; // Example: CS101-001
     }
+
 
     /**
         A method that allows the lecture counter to be set to a specific value.

@@ -17,7 +17,6 @@ class LectureManager
     {
         Lectures = new List<Lecture>();
         LoadFromFile();
-        
     }
 
 
@@ -30,12 +29,6 @@ class LectureManager
             Console.WriteLine("Lecture added successfully.");
             SaveToFile();
         }
-    }
-
-    internal void AddLecture(Programming programming)
-    {
-        Lectures.Add(programming);
-        Console.WriteLine("Lecture added successfully.");
     }
 
 
@@ -53,23 +46,6 @@ class LectureManager
         {
             Console.WriteLine("\nLecture not found!");
         }
-    }
-
-
-    public bool DeleteLectureByIndex(int index)
-    {
-        if (index >= 0 && index < Lectures.Count)
-        {
-            Lectures.RemoveAt(index);
-            Console.WriteLine("Lecture deleted");
-            SaveToFile();
-            return true;
-        }
-        else
-        {
-            Console.WriteLine("\nInvalid index. No lecture removed!");
-        }
-        return false;
     }
 
 
@@ -128,31 +104,13 @@ class LectureManager
 
 
     /**
-    * Method to display all lectures in the list
-    */
-    public void DisplayAllLectures()
-    {
-        Console.WriteLine("\nAll Lectures:");
-        foreach (var lecture in Lectures)
-        {
-            Console.WriteLine(lecture.GetDetails());
-        }
-    }
-
-
-    List<Lecture> getLectureList()
-    {
-         return Lectures;
-    }
-
-
-    /**
     * Method to get the total number of lectures in the list
     */
     public int GetTotalLectures()
     {
         return Lectures.Count;
     }
+
 
     /**
     * Method to get a lecture by its subject code.  
@@ -219,6 +177,4 @@ class LectureManager
                 Lectures.Add(lecture);
         }
     }
-
-
 }

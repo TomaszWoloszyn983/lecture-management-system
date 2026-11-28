@@ -28,7 +28,9 @@ class ConsoleUI()
 
                 case "2":
                     // Display a specific lecture
-                    PrintLecture();
+                    string lectureCode = ReadStringInput("Enter the lecture code to display:");
+                    Lecture? lecture = _lectureManager.GetLectureByCode(lectureCode);
+                    PrintLecture(lecture);
                     break;
 
                 case "3":
@@ -85,7 +87,7 @@ class ConsoleUI()
     private void DisplayAllLecturesOption()
     {
         Console.WriteLine("\n==================== ALL LECTURES "
-                            +$"({_lectureManager.GetTotalLectures()}) ====================");
+                            +$"({_lectureManager.GetTotalLectures()}) ====================\n");
         if (_lectureManager.GetTotalLectures() > 0)
         {
             Console.WriteLine($"{"CODE",-8} | {"TYPE",-11} | {"HOURS",5} | {"SUBJECT",-28} | {"LECTURER",-22} | {"DETAIL"}");
@@ -111,6 +113,11 @@ class ConsoleUI()
         }
     }
 
+    /**
+    * A utility method to fit a string into a specified width.  
+    * If the string is longer than the width, it truncates and adds ellipsis.
+    * If the string is shorter, it pads with spaces to align properly in the console output.
+    */
     private static string Fit(string? text, int width)
     {
         string value = (text ?? string.Empty).Trim();
@@ -121,10 +128,12 @@ class ConsoleUI()
         return value.PadRight(width);
     }
     
-    private void PrintLecture()
+    /**
+    * Prints the details of a specific lecture to the console.  
+    * It format to a readable cart format, showing all relevant information about the lecture.
+    */  
+    private void PrintLecture(Lecture lecture)
     {
-        string lectureCode = ReadStringInput("Enter the lecture code:");
-        Lecture lecture = _lectureManager.GetLectureByCode(lectureCode);
         if (lecture != null)
         {
             string detailLabel = lecture switch
@@ -143,16 +152,14 @@ class ConsoleUI()
                 _ => string.Empty
             };
 
-            Console.WriteLine("  ------------------------------------------"
-                                +$"\n  | Code     : {lecture.SubjectCode}"
-                                +$"\n  | Subject  : {lecture.SubjectName}"
-                                +$"\n  | Lecturer : {lecture.LecturerName}"
-                                +$"\n  | Hours    : {lecture.LectureHours}h"
-                                +$"\n  | {detailLabel,-8} : {detailValue}"
-                                +"\n  ------------------------------------------");
-            
+            Console.WriteLine("  -----------------------------------------------------"
+                            +$"\n  | Code                 : {lecture.SubjectCode}"
+                            +$"\n  | Subject              : {lecture.SubjectName}"
+                            +$"\n  | Lecturer             : {lecture.LecturerName}"
+                            +$"\n  | Hours                : {lecture.LectureHours}h"
+                            +$"\n  | {detailLabel,-20} : {detailValue}"
+                            +"\n  -----------------------------------------------------");
         }
-        
     }
     
 
@@ -181,14 +188,14 @@ class ConsoleUI()
                 inputParts[1] = ReadStringInput("Enter subject name:");
                 inputParts[2] = ReadStringInput("Enter lecturer name:");
                 inputParts[3] = ReadNumericInput("Enter lecture hours:");
-                inputParts[4] = ReadStringInput("Enter database type:");
+                inputParts[4] = ReadStringInput("Enter fungi type:");
                 return new Mycology(inputParts[1].ToString(), inputParts[2].ToString(), (int)inputParts[3], inputParts[4].ToString());
             case "AS":
                 inputParts[0] = lectureCode;
                 inputParts[1] = ReadStringInput("Enter subject name:");
                 inputParts[2] = ReadStringInput("Enter lecturer name:");
                 inputParts[3] = ReadNumericInput("Enter lecture hours:");
-                inputParts[4] = ReadStringInput("Enter network type:");
+                inputParts[4] = ReadStringInput("Enter celestial body:");
                 return new Astronomy(inputParts[1].ToString(), inputParts[2].ToString(), (int)inputParts[3], inputParts[4].ToString());
             default:
                 Console.WriteLine($"Invalid lecture code: {lectureCode}");
@@ -208,7 +215,7 @@ class ConsoleUI()
         Lecture lectureToUpdate = _lectureManager.GetLectureByCode(lectureCode);
         if (lectureToUpdate != null)
         {
-            Console.WriteLine($"\nCurrent details: {lectureToUpdate.GetDetails()}");
+            PrintLecture(lectureToUpdate);
             string newSubjectName = ReadStringOrDefault(
                                     "Enter new subject name (or press Enter to keep current):", 
                                     lectureToUpdate.SubjectName);

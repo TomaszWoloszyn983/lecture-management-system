@@ -1,13 +1,10 @@
 
 using LectureManagementSystem.Models;
 
-// Intruduction to Mycology: The study of fungi, including their genetic and biochemical properties, their taxonomy, and their use to humans as a source for tinder, medicine, food, and entheogens, as well as their dangers, such as toxicity or infection.
-// Edible and inedible mushrooms
-// Symbiotic relationships:
 
 public class Mycology : Lecture
 {
-    public string FungiType { get; set; } // Unikalna cecha dla mykologii
+    public string FungiType { get; set; } 
 
     public Mycology(string subjectName, string lecturerName, int lectureHours, string fungiType) 
         : base("MY", subjectName, lecturerName, lectureHours)

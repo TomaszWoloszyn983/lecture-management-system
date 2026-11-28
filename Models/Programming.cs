@@ -2,7 +2,7 @@ using LectureManagementSystem.Models;
 
 public class Programming : Lecture
 {
-    public string ProgrammingLanguage { get; set; } //  string subljectCode = "PR"; // A unique subject code for programming lectures
+    public string ProgrammingLanguage { get; set; }
 
     public Programming(string subjectName, string lecturerName, int lectureHours, string programmingLanguage) 
         : base("PR", subjectName, lecturerName, lectureHours)
@@ -10,6 +10,7 @@ public class Programming : Lecture
         ProgrammingLanguage = programmingLanguage;
         Console.WriteLine($"Programming lecture created: {SubjectCode} - {SubjectName} in {ProgrammingLanguage}");
     }
+
 
     // Overriding the GetDetails method
     public override string GetDetails()

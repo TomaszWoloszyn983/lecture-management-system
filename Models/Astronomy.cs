@@ -2,7 +2,7 @@ using LectureManagementSystem.Models;
 
 public class Astronomy : Lecture
 {
-    public string CelestialBody { get; set; } // A unique subject code for astronomy lectures
+    public string CelestialBody { get; set; }
 
     public Astronomy(string subjectName, string lecturerName, int lectureHours, string CelestialBody) 
         : base("AS", subjectName, lecturerName, lectureHours)
@@ -10,6 +10,7 @@ public class Astronomy : Lecture
         this.CelestialBody = CelestialBody;
         Console.WriteLine($"Astronomy lecture created: {SubjectCode} - {SubjectName} on {CelestialBody}");
     }
+
 
     // Overriding the GetDetails method
     public override string GetDetails()
