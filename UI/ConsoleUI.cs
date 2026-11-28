@@ -27,16 +27,21 @@ class ConsoleUI()
                     break;
 
                 case "2":
+                    // Display a specific lecture
+                    PrintLecture();
+                    break;
+
+                case "3":
                     // Add lecture
                     _lectureManager.AddLecture(getNewLecture());
                     break;
 
-                case "3":
+                case "4":
                     // Update lecture
                     UpdateLectureOption();
                     break;
 
-                case "4":
+                case "5":
                     // Delete lecture
                     DeleteLectureOption();
                     break;
@@ -65,9 +70,10 @@ class ConsoleUI()
                         +"\n-------------------------------------------------------------------"
                         +"\n\n\t\t\tSELECT AN OPTION:"
                         +"\n\n1 to Display All Lectures"
-                        +"\n2 to Add Lecture"
-                        +"\n3 to Update Lecture"
-                        +"\n4 to Delete Lecture"
+                        +"\n2 to Display a Specific Lecture"
+                        +"\n3 to Add Lecture"
+                        +"\n4 to Update Lecture"
+                        +"\n5 to Delete Lecture"
                         +"\n0 to Exit");
         Console.Write("\n> ");
     }
@@ -87,9 +93,9 @@ class ConsoleUI()
 
             foreach (var lecture in _lectureManager.Lectures)
             {
-                Console.WriteLine($"{lecture.SubjectCode,-8} | {lecture.GetType().Name,-11} | "
-                                 +$"{lecture.LectureHours,5} | {lecture.SubjectName,-28} | "
-                                 +$"{lecture.LecturerName,-22} | {lecture switch
+                Console.WriteLine($"{lecture.SubjectCode,-8} | {Fit(lecture.GetType().Name,11)} | "
+                                 +$"{lecture.LectureHours,5} | {Fit(lecture.SubjectName, 28)} | "
+                                 +$"{Fit(lecture.LecturerName,22)} | {lecture switch
                                     {
                                         Programming p => p.ProgrammingLanguage,
                                         Astronomy a => a.CelestialBody,
@@ -104,8 +110,50 @@ class ConsoleUI()
             Console.WriteLine("No lectures available yet.");
         }
     }
+
+    private static string Fit(string? text, int width)
+    {
+        string value = (text ?? string.Empty).Trim();
+
+        if (value.Length > width)
+            value = width > 3 ? value[..(width - 3)] + "..." : value[..width];
+
+        return value.PadRight(width);
+    }
     
-    
+    private void PrintLecture()
+    {
+        string lectureCode = ReadStringInput("Enter the lecture code:");
+        Lecture lecture = _lectureManager.GetLectureByCode(lectureCode);
+        if (lecture != null)
+        {
+            string detailLabel = lecture switch
+            {
+                Programming => "Programming Language",
+                Mycology => "Fungi Type",
+                Astronomy => "Celestial Body",
+                _ => "Detail"
+            };
+
+            string detailValue = lecture switch
+            {
+                Programming p => p.ProgrammingLanguage,
+                Mycology m => m.FungiType,
+                Astronomy a => a.CelestialBody,
+                _ => string.Empty
+            };
+
+            Console.WriteLine("  ------------------------------------------"
+                                +$"\n  | Code     : {lecture.SubjectCode}"
+                                +$"\n  | Subject  : {lecture.SubjectName}"
+                                +$"\n  | Lecturer : {lecture.LecturerName}"
+                                +$"\n  | Hours    : {lecture.LectureHours}h"
+                                +$"\n  | {detailLabel,-8} : {detailValue}"
+                                +"\n  ------------------------------------------");
+            
+        }
+        
+    }
     
 
     /**
@@ -116,7 +164,7 @@ class ConsoleUI()
     */
     public Lecture getNewLecture()
     {   Object[] inputParts = new Object[5];
-        Console.WriteLine("\n\nEnter lecture code"
+        Console.WriteLine("Enter lecture code"
                          +"\n(PR - Programming, MY - Mycology, AS - Astronomy):");
         string lectureCode = Console.ReadLine().ToUpper();
         switch (lectureCode)

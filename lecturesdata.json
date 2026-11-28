@@ -1,5 +1,5 @@
 {
-  "TotalLecturesCreated": 17,
+  "TotalLecturesCreated": 18,
   "Lectures": [
     {
       "$type": "programming",
@@ -88,6 +88,14 @@
       "SubjectName": "Dwarf Planets",
       "LecturerName": "Prof Xavier",
       "LectureHours": 13
+    },
+    {
+      "$type": "programming",
+      "ProgrammingLanguage": "C\u002B\u002B",
+      "SubjectCode": "PR_0018",
+      "SubjectName": "Octopus Tentacles Software",
+      "LecturerName": "Dr. Octavius",
+      "LectureHours": 1000
     }
   ]
 }
